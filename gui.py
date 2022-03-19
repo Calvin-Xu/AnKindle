@@ -749,12 +749,12 @@ class VocabWin(QDialog):
                 continue
             note.model()['did'] = self.deck['id']
 
-            print(word)
+            # print(word)
             try:
                 dictionary_form = mecab_wrapper.getMorphemesMecab(word)[0].base
             except IndexError:
                 dictionary_form = "ERROR"
-            print(dictionary_form)
+            # print(dictionary_form)
             qry_word = dictionary_form if dictionary_form else word if word else ''
 
             mdx_files = self.MDXFiles
@@ -800,7 +800,7 @@ class VocabWin(QDialog):
                             )
                     break
 
-            print(dict_data)
+            # print(dict_data)
 
             _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
             # try:
