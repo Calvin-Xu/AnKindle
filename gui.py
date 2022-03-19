@@ -11,7 +11,8 @@ from operator import itemgetter
 import anki
 from anki import notes
 from anki.lang import currentLang
-from aqt import QAbstractTableModel, Qt, QAbstractItemView, isWin
+from aqt import QAbstractTableModel, Qt, QAbstractItemView
+from anki.utils import is_win
 from aqt import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
     QIcon
@@ -87,7 +88,7 @@ class _SharedFrame(QFrame):
             up_btn = UpgradeButton(self, updater)
             up_btn.setIcon(os.path.join(os.path.dirname(__file__), "resource", "update.png"))
             self.l_h_widgets.addWidget(up_btn)
-            if isWin:
+            if is_win:
                 up_btn.clicked.disconnect()
                 up_btn.clicked.connect(
                     lambda: showText(_trans("WIN UPDATE") % ADDON_CD, parent, title=_trans("ANKINDLE")))
@@ -258,26 +259,26 @@ class WordsModel(QAbstractTableModel):
 
         if not index.isValid():
             return
-        elif role == Qt.TextAlignmentRole:
-            align = Qt.AlignVCenter
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
+            align = Qt.AlignmentFlag.AlignVCenter
             return align
-        elif role == Qt.DisplayRole or role == Qt.EditRole or role == Qt.ToolTipRole:
+        elif role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole or role == Qt.ItemDataRole.ToolTipRole:
             return self.columnData(index)
         else:
             return
 
     def headerData(self, section, orientation, role):
-        if orientation == Qt.Vertical:
+        if orientation == Qt.Orientation.Vertical:
             return
-        elif role == Qt.DisplayRole and section < len(self.activeCols):
+        elif role == Qt.ItemDataRole.DisplayRole and section < len(self.activeCols):
             txt = self.columnType(section)
             return txt
         else:
             return
 
     def flags(self, index):
-        return Qt.ItemFlag(Qt.ItemIsEnabled |
-                           Qt.ItemIsSelectable)
+        return Qt.ItemFlag(Qt.ItemFlag.ItemIsEnabled |
+                           Qt.ItemFlag.ItemIsSelectable)
 
     def columnType(self, column):
         return self.activeCols[column]
@@ -748,7 +749,12 @@ class VocabWin(QDialog):
                 continue
             note.model()['did'] = self.deck['id']
 
-            dictionary_form = mecab_wrapper.getMorphemesMecab(word)[0].base
+            print(word)
+            try:
+                dictionary_form = mecab_wrapper.getMorphemesMecab(word)[0].base
+            except IndexError:
+                dictionary_form = "ERROR"
+            print(dictionary_form)
             qry_word = dictionary_form if dictionary_form else word if word else ''
 
             mdx_files = self.MDXFiles
@@ -794,25 +800,27 @@ class VocabWin(QDialog):
                             )
                     break
 
+            print(dict_data)
+
             _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
-            try:
-                _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
-            except TypeError:
-                return False
+            # try:
+            #     _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
+            # except TypeError:
+            #     return False
 
             def update_note(_note):
-                _note.fields[_note._fieldOrd('id')] = _id_in_field if _id_in_field else ''
-                _note.fields[_note._fieldOrd('word')] = qry_word if qry_word else word if word else ''
-                _note.fields[_note._fieldOrd('original')] = word if word else ''
-                _note.fields[_note._fieldOrd('lang')] = lang if lang else ''
-                _note.fields[_note._fieldOrd('creation_tm')] = added_tm if added_tm else ''
-                _note.fields[_note._fieldOrd('usage')] = _usage if _usage else ''
-                _note.fields[_note._fieldOrd('title')] = title if title else ''
-                _note.fields[_note._fieldOrd('authors')] = authors if authors else ''
-                _note.fields[_note._fieldOrd('mdx_dict')] = dict_data
+                _note.fields[_note._field_index('id')] = ''
+                _note.fields[_note._field_index('word')] = qry_word if qry_word else word if word else ''
+                _note.fields[_note._field_index('original')] = word if word else ''
+                _note.fields[_note._field_index('lang')] = lang if lang else ''
+                _note.fields[_note._field_index('creation_tm')] = added_tm if added_tm else ''
+                _note.fields[_note._field_index('usage')] = _usage if _usage else ''
+                _note.fields[_note._field_index('title')] = title if title else ''
+                _note.fields[_note._field_index('authors')] = authors if authors else ''
+                _note.fields[_note._field_index('mdx_dict')] = dict_data
 
                 try:
-                    _note.fields[_note._fieldOrd('mdx_name')] = dict_nm
+                    _note.fields[_note._field_index('mdx_name')] = dict_nm
                 except KeyError:
                     pass
                 return True
