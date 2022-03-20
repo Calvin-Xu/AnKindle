@@ -729,15 +729,15 @@ class MoreAddonMenu(QMenu):
 
 def HLine():
     toto = QFrame()
-    toto.setFrameShape(QFrame.HLine)
-    toto.setFrameShadow(QFrame.Sunken)
+    toto.setFrameShape(QFrame.Shape.HLine)
+    toto.setFrameShadow(QFrame.Shadow.Sunken)
     return toto
 
 
 def VLine():
     toto = QFrame()
-    toto.setFrameShape(QFrame.VLine)
-    toto.setFrameShadow(QFrame.Sunken)
+    toto.setFrameShape(QFrame.Shape.VLine)
+    toto.setFrameShadow(QFrame.Shadow.Sunken)
     return toto
 
 

@@ -62,7 +62,7 @@ class _HelpBtn(_ImageButton):
         online_template_doc = QPushButton(_trans("MORE_DOC"), dlg)
         online_template_doc.clicked.connect(partial(openLink, ONLINE_DOC_URL))
         dlg.layout().insertWidget(1, online_template_doc)
-        dlg.exec_()
+        dlg.exec()
 
 
 class _SharedFrame(QFrame):
@@ -82,7 +82,7 @@ class _SharedFrame(QFrame):
         mr.setIcon(os.path.join(os.path.dirname(__file__), "resource", "more.png"))
         self.l_h_widgets.addWidget(mr)
         self.help_btn = _HelpBtn(self)
-        self.l_h_widgets.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Minimum, ))
+        self.l_h_widgets.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum, ))
         self.l_h_widgets.addWidget(self.help_btn)
         if updater:
             up_btn = UpgradeButton(self, updater)
@@ -115,7 +115,7 @@ class WordsView(QDialog):
         l_h = QHBoxLayout()
         l_h.addWidget(self.btn_refresh)
         l_h.addWidget(self.btn_mark_as_mature)
-        l_h.addSpacerItem(QSpacerItem(100, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        l_h.addSpacerItem(QSpacerItem(100, 1, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
         l.addLayout(l_h)
 
         self.lang = ''
@@ -199,14 +199,14 @@ class WordsView(QDialog):
                 continue
 
             tableView.setMinimumSize(QSize(800, 400))
-            tableView.setContextMenuPolicy(Qt.ActionsContextMenu)
-            tableView.setFrameShape(QFrame.NoFrame)
-            tableView.setFrameShadow(QFrame.Plain)
-            tableView.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-            tableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+            tableView.setContextMenuPolicy(Qt.ContextMenuPolicy.ActionsContextMenu)
+            tableView.setFrameShape(QFrame.Shape.NoFrame)
+            tableView.setFrameShadow(QFrame.Shadow.Plain)
+            tableView.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+            tableView.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
             tableView.setTabKeyNavigation(False)
             tableView.setAlternatingRowColors(True)
-            tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+            tableView.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
             tableView.horizontalHeader().setCascadingSectionResizes(False)
             tableView.horizontalHeader().setHighlightSections(False)
             tableView.horizontalHeader().setMinimumSectionSize(20)
@@ -348,15 +348,15 @@ class VocabWin(QDialog):
         self.l_lists = QVBoxLayout(self.grp)
 
         l_grp_top = QHBoxLayout()
-        self.l_lists.addWidget(self.lb_db, 0, Qt.AlignCenter)
-        l_grp_top.addWidget(QLabel(_trans("Mandatory"), self), 0, Qt.AlignLeft)
+        self.l_lists.addWidget(self.lb_db, 0, Qt.AlignmentFlag.AlignCenter)
+        l_grp_top.addWidget(QLabel(_trans("Mandatory"), self), 0, Qt.AlignmentFlag.AlignLeft)
         self.l_lists.addLayout(l_grp_top)
 
         l_language = QHBoxLayout()
         l_language.addWidget(self.btn_select_db)
         l_language.addWidget(VLine())
-        l_language.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Minimum, QSizePolicy.Minimum))
-        l_language.addWidget(QLabel(_trans("language"), self), 0, Qt.AlignLeft)
+        l_language.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum))
+        l_language.addWidget(QLabel(_trans("language"), self), 0, Qt.AlignmentFlag.AlignLeft)
         l_language.addWidget(self.combo_lang)
         self.l_lists.addLayout(l_language)
         self.l_lists.addWidget(self.btn_1select_model)
@@ -366,7 +366,7 @@ class VocabWin(QDialog):
         l.addWidget(self.btn_3select_mdx)
 
         self.l_lists.addWidget(HLine())
-        self.l_lists.addWidget(QLabel(_trans("Optional"), self), 0, Qt.AlignLeft)
+        self.l_lists.addWidget(QLabel(_trans("Optional"), self), 0, Qt.AlignmentFlag.AlignLeft)
         self.l_lists.addLayout(l)
 
         self.btn_import = QPushButton(_trans("ONE CLICK IMPORT"), self, clicked=self.on_import)
@@ -391,7 +391,7 @@ class VocabWin(QDialog):
         l_import.addWidget(self.btn_preview_words)
         l_import.addWidget(self.btn_import)
         self.l.addLayout(l_import)
-        self.l.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        self.l.addSpacerItem(QSpacerItem(20, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
 
         # endregion
 
@@ -509,7 +509,7 @@ class VocabWin(QDialog):
         if not mid:
             if not ignore_selection:
                 study_deck_ret = self.select_model()
-                self.model = mw.col.models.byName(study_deck_ret.name)
+                self.model = mw.col.models.by_name(study_deck_ret.name)
         else:
             self.model = mw.col.models.get(mid)
 
@@ -551,7 +551,7 @@ class VocabWin(QDialog):
             if ret:
                 nm = ret.name
         if nm:
-            self.deck = mw.col.decks.byName(nm)
+            self.deck = mw.col.decks.by_name(nm)
             self.btn_2select_deck.setText(
                 u'%s [%s]' % (_trans("DECK TYPE"), nm))
 
@@ -565,7 +565,7 @@ class VocabWin(QDialog):
 
         if not ignore_selection:
             dlg = plus.MDXDialog(self, self.current_mdx_lang)
-            dlg.exec_()
+            dlg.exec()
         mdx = self.MDXFilesFirstFile
         if mdx:
             self.btn_3select_mdx.setText(
@@ -840,4 +840,4 @@ class VocabWin(QDialog):
     def on_preview_words(self):
         self.preview_words_win.lang = self.current_mdx_lang
         self.preview_words_win.refresh()
-        self.preview_words_win.exec_()
+        self.preview_words_win.exec()

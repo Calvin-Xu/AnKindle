@@ -89,7 +89,7 @@ class AnKindleAddon:
         return True
 
     def on_show_enter_sn_dialog(self, *args):
-        self.sn_register_dlg.exec_()
+        self.sn_register_dlg.exec()
 
     def on_show_clipping_dialog(self):
         mw.onAddCard()
@@ -101,7 +101,7 @@ class AnKindleAddon:
             self.vocab_dlg.setWindowTitle(title)
         else:
             self.vocab_dlg.setWindowTitle("{} - {}".format(_trans("AnKindle"), __version__))
-        self.vocab_dlg.exec_()
+        self.vocab_dlg.exec()
 
     def avl_col_model_names(self):
         _ = []
