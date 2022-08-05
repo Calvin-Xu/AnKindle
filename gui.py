@@ -826,11 +826,15 @@ class VocabWin(QDialog):
                 return True
 
             if update_note(note):
-                if note.dupeOrEmpty() != 2:
-                    mw.col.addNote(note)
-                    total_new += 1
-                else:
-                    total_dup += 1
+                # if note.dupeOrEmpty() != 2:
+                #     mw.col.addNote(note)
+                #     total_new += 1
+                # else:
+                #     total_dup += 1
+                
+                mw.col.addNote(note)
+                total_new += 1
+
                 mw.col.autosave()
                 # endregion
 
