@@ -10,7 +10,7 @@ from operator import itemgetter
 
 import anki
 from anki import notes
-from anki.lang import currentLang
+from anki.lang import current_lang
 from aqt import QAbstractTableModel, Qt, QAbstractItemView
 from anki.utils import is_win
 from aqt import QDialog, QVBoxLayout, QFrame, \
@@ -37,7 +37,7 @@ from .libs.morph import mecab_wrapper
 class _HelpBtn(_ImageButton):
     def __init__(self, parent, help_text_or_file=None):
         if not help_text_or_file:
-            if currentLang == 'zh_CN':
+            if current_lang == 'zh_CN':
                 help_text_or_file = os.path.join(os.path.dirname(__file__), "resource", "help_cn.html")
             else:
                 help_text_or_file = os.path.join(os.path.dirname(__file__), "resource", "help_en.html")
@@ -749,12 +749,12 @@ class VocabWin(QDialog):
                 continue
             note.model()['did'] = self.deck['id']
 
-            # print(word)
+            print(word)
             try:
                 dictionary_form = mecab_wrapper.getMorphemesMecab(word)[0].base
             except IndexError:
                 dictionary_form = "ERROR"
-            # print(dictionary_form)
+            print(dictionary_form)
             qry_word = dictionary_form if dictionary_form else word if word else ''
 
             mdx_files = self.MDXFiles
@@ -800,7 +800,7 @@ class VocabWin(QDialog):
                             )
                     break
 
-            # print(dict_data)
+            print(dict_data)
 
             _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
             # try:

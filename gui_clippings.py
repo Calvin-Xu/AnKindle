@@ -8,8 +8,9 @@ from sqlite3 import dbapi2 as sqlite
 from warnings import filterwarnings
 
 from anki.hooks import wrap, addHook, runHook, _hooks
-from anki.lang import _, currentLang
-from aqt import mw, QTreeWidgetItem, QMenu, QAction, QCursor, Qt, QFont, QIcon, isMac, QDialog, QPushButton, \
+from anki.lang import _, current_lang
+from anki.utils import is_mac
+from aqt import mw, QTreeWidgetItem, QMenu, QAction, QCursor, Qt, QFont, QIcon, QDialog, QPushButton, \
     QListWidget, QSize, QComboBox, QLineEdit, QLabel, QApplication, QGroupBox, QCheckBox, QScrollArea, QGridLayout
 from aqt.addcards import AddCards, \
     QHBoxLayout, QSizePolicy, QVBoxLayout, QFrame, QSpacerItem, QTreeWidget
@@ -104,7 +105,7 @@ def _add_start_btn(self):
     assert isinstance(self, AddCards)
     self.btn_start = kkLib._ImageButton(self, _png("kindle.png"))
     self.form.horizontalLayout.insertWidget(0, self.btn_start)
-    if isMac:
+    if is_mac:
         self.form.horizontalLayout.setSpacing(20)
 
 
@@ -135,7 +136,7 @@ def wrap_editor_for_clippings_import():
     AddCards.addCards = wrap(AddCards.addCards, _adjust_before_add_cards, "before")
     AddCards.addCards = wrap(AddCards.addCards, _adjust_after_add_cards, "after")
     AddCards.onModelChange = wrap(AddCards.onModelChange, _adjust_after_add_cards_model_changed, "after")
-    AddCards.setupEditor = wrap(AddCards.setupEditor, _add_clipping_tree, "before")
+    # AddCards.setupEditor = wrap(AddCards.setupEditor, _add_clipping_tree, "before")
     # AddCards.setupChoosers = wrap(AddCards.setupChoosers, _add_start_btn, "before")
     Editor.loadNote = wrap(Editor.loadNote, _adjust_after_note_loaded, "after")
 
@@ -293,7 +294,7 @@ class _ClippingFrame(QFrame):
 
         # buttons
         self.layout_btn = QHBoxLayout()
-        if isMac:
+        if is_mac:
             self.layout_btn.setSpacing(20)
         self.btn_select_file = kkLib._ImageButton(self, _png("select_file.png"))
 
@@ -1295,7 +1296,7 @@ class Cnf:
 
 # region verify sn
 
-def get_trans(key, trans_map, lang=currentLang):
+def get_trans(key, trans_map, lang=current_lang):
     """
 
     :param key:
@@ -1325,7 +1326,7 @@ class SNRegDialog(QDialog):
     _Unlocked = None
 
     def _(self, key):
-        return self.get_trans(key, self.trans, currentLang)
+        return self.get_trans(key, self.trans, current_lang)
 
     def __init__(self, parent, addon, ):
         super(SNRegDialog, self).__init__(parent, )

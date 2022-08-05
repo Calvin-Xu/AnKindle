@@ -25,7 +25,7 @@ from threading import Thread
 from uuid import uuid4
 
 import aqt
-from anki.lang import currentLang
+from anki.lang import current_lang
 from aqt import *
 # from aqt.downloader import download
 from aqt.utils import showInfo, openLink
@@ -228,7 +228,7 @@ def decEnsureRUnicode(func):
 # region Functions
 
 
-def getTrans(key, trans_map, lang=currentLang):
+def getTrans(key, trans_map, lang=current_lang):
     """
 
     :param key:
@@ -697,7 +697,7 @@ class MoreAddonMenu(QMenu):
 
     def parse(self):
         for index, addon_data in sorted(self.config_json.items(), key=itemgetter(0)):
-            addon_nm = addon_data.get(currentLang, "en")
+            addon_nm = addon_data.get(current_lang, "en")
             anki_versions = addon_data.get("anki_versions")
             urls = addon_data.get("urls")
             tip_data = addon_data.get("tip")
@@ -710,14 +710,14 @@ class MoreAddonMenu(QMenu):
             else:
                 addon_menu = QMenu(addon_nm, self)
 
-            addon_menu.setToolTip(tip_data.get(currentLang, "en"))
+            addon_menu.setToolTip(tip_data.get(current_lang, "en"))
             addon_menu.setWhatsThis(self.toolTip())
 
             for url_nm, url_data in sorted(urls.items(), key=itemgetter(0)):
                 if len(urls) == 1:
                     addon_menu.triggered.connect(partial(openLink, (url_data['url'])))
                 else:
-                    url_action = QAction(url_data.get(currentLang, "en"), addon_menu)
+                    url_action = QAction(url_data.get(current_lang, "en"), addon_menu)
                     url_action.triggered.connect(partial(openLink, (url_data['url'])))
                     addon_menu.addAction(url_action)
 

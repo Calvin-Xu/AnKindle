@@ -5,7 +5,7 @@
 import os
 
 from anki.db import DB
-from anki.utils import isWin
+from anki.utils import is_win
 from aqt import mw
 # noinspection SqlResolve
 from aqt.utils import getFile
@@ -37,7 +37,7 @@ class VocabDB(DB):
             return False
 
     def search_db(self, force_select_db=False):
-        if isWin:
+        if is_win:
             allDisks = ['A:', 'B:', 'C:', 'D:', 'E:', 'F:', 'G:',
                         'H:', 'I:', 'J:', 'K:', 'L:', 'M:', 'N:', 'O:', 'P:', 'Q:',
                         'R:', 'S:',

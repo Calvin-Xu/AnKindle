@@ -6,7 +6,7 @@ import os
 from threading import Thread
 from time import sleep
 
-from anki.utils import isWin
+from anki.utils import is_win
 from aqt import mw
 from aqt.utils import showInfo
 from .libs import six
@@ -58,7 +58,7 @@ class _client_proxy:
 
     def try_server(self):
         _rpc_client = client.ServerProxy("http://localhost:8632", allow_none=True)
-        arpc_file = os.path.join(addon_dir, 'ARPC{}'.format(".exe" if isWin else ""))
+        arpc_file = os.path.join(addon_dir, 'ARPC{}'.format(".exe" if is_win else ""))
         try:
             media_folder = os.path.join(mw.pm.profileFolder(), "collection.media")
         except:
@@ -73,7 +73,7 @@ class _client_proxy:
             except:
                 if not os.path.isfile(arpc_file):
                     return None
-                if isWin:
+                if is_win:
                     from anki.utils import call
                     try:
                         call([six.ensure_text(arpc_file), six.ensure_text(media_folder)], wait=False,
