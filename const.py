@@ -36,7 +36,8 @@ FROM words AS ws LEFT JOIN lookups AS lus ON ws.id = lus.word_key
   LEFT JOIN book_info AS bi ON lus.book_key = bi.id
 """
 
-MUST_IMPLEMENT_FIELDS = ("STEM", "WORD", "LANG", "CREATION_TM", "USAGE", "TITLE", "AUTHORS", "ID")
+# MUST_IMPLEMENT_FIELDS = ("STEM", "WORD", "LANG", "CREATION_TM", "USAGE", "TITLE", "AUTHORS", "ID")
+MUST_IMPLEMENT_FIELDS = ("WORD", "ORIGINAL", "LANG", "CREATION_TM", "USAGE", "TITLE", "AUTHORS", "ID")
 addon_dir = os.path.split(__file__)[0]
 
 global _RPC_CLIENT
